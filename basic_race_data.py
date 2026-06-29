@@ -19,7 +19,7 @@ if event.empty:
     event = fastf1.get_event_schedule(YEAR).query("EventName.str.contains('British', case=False)")
 
 session = fastf1.get_session(YEAR, GRAND_PRIX, 'R')
-session.load(quiet=True)  # quiet=True reduces spam
+session.load()  # quiet=True reduces spam
 
 results = session.results
 
@@ -34,7 +34,10 @@ df = pd.DataFrame({
 })
 
 # Clean race_time_status
-df["race_time_status"] = df["race_time_status"].replace("NaT", results["Status"])
+df["race_time_status"] = results["Time"].astype(str)
+mask = results["Time"].isna()
+df.loc[mask, "race_time_status"] = results.loc[mask, "Status"]
+
 
 # Optional: Better time formatting
 def format_time(td):
