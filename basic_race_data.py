@@ -27,6 +27,7 @@ def get_race_info(YEAR, GRAND_PRIX):
     df.loc[mask, "race_time_status"] = results.loc[mask, "Status"]
     #print(df)
     # you can print to check the value^^
+    safe_name = grand_prix.lower().replace(" ", "_")
 # Export
     df.to_csv(f"{GRAND_PRIX}_{YEAR}_basic_results.csv", index=False)
     df.to_json(f"{GRAND_PRIX}_{YEAR}_basic_results.json", orient="records", indent=4)
