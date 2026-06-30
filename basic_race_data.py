@@ -25,7 +25,8 @@ def get_race_info(YEAR, GRAND_PRIX):
 # Clean race_time_status
     mask = results["Time"].isna()
     df.loc[mask, "race_time_status"] = results.loc[mask, "Status"]
-    print(df)
+    #print(df)
+    # you can print to check the value^^
 # Export
     df.to_csv(f"{GRAND_PRIX}_{YEAR}_basic_results.csv", index=False)
     df.to_json(f"{GRAND_PRIX}_{YEAR}_basic_results.json", orient="records", indent=4)
