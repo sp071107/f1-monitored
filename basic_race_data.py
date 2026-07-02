@@ -40,6 +40,5 @@ def get_race_info(YEAR, GRAND_PRIX):
         #return results["Status"].iloc[0] if not results["Status"].empty else "Unknown"
     # Convert to nice string like "1:22:27.059" or gap
     #return str(td).split()[-1]  # removes '0 days '
-# Apply if desired
 # df["race_time_status"] = results["Time"].apply(format_time).fillna(results["Status"])
 
