@@ -13,7 +13,7 @@ def get_race_info(YEAR, GRAND_PRIX):
     session: Session = fastf1.get_session(YEAR, GRAND_PRIX, 'R')
     session.load()  
     results = session.results
-# Build DataFrame with better formatting
+#Data frame=]
     df = pd.DataFrame({
         "driver_code": results["Abbreviation"],
         "driver_name": results["FullName"],
@@ -27,7 +27,7 @@ def get_race_info(YEAR, GRAND_PRIX):
     df.loc[mask, "race_time_status"] = results.loc[mask, "Status"]
     #print(df)
     # you can print to check the value^^
-    safe_name = grand_prix.lower().replace(" ", "_")
+    GRAND_PRIX = GRAND_PRIX.lower().replace(" ", "_")
 # Export
     df.to_csv(f"{GRAND_PRIX}_{YEAR}_basic_results.csv", index=False)
     df.to_json(f"{GRAND_PRIX}_{YEAR}_basic_results.json", orient="records", indent=4)
@@ -41,4 +41,6 @@ def get_race_info(YEAR, GRAND_PRIX):
     # Convert to nice string like "1:22:27.059" or gap
     #return str(td).split()[-1]  # removes '0 days '
 # df["race_time_status"] = results["Time"].apply(format_time).fillna(results["Status"])
+if __name__=='__main__':
+    get_race_info(2024,'Silverstone')
 
