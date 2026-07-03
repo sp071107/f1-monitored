@@ -19,7 +19,12 @@ def load_session(year: int, event: str, session_type: str = "R"):
     session.load()
     return session
 
-def build_lap_dataset(session) -> pd.DataFrame:
+def build_lap_dataset(year,event,session_type) -> pd.DataFrame:
+    #year: e.g. 2024
+    #event: round number, or name/substring like "Monza"
+    #session_type: 'FP1','FP2','FP3','Q','SQ','R' (race), 'S' (sprint) if yk, yk
+    session = fastf1.get_session(year, event, session_type)
+    session.load()
     laps = session.laps.copy()
 
     # Structure
@@ -74,6 +79,8 @@ def build_lap_dataset(session) -> pd.DataFrame:
     ]
     ordered_cols = [c for c in ordered_cols if c in df.columns]
     df = df[ordered_cols].sort_values(["lap", "position"], na_position="last").reset_index(drop=True)
+    df.to_csv("{event.lower()}_{year}_{session_type}_laps.csv", index=False)
+
 
     return df
 
@@ -87,10 +94,8 @@ def get_lap_for_all_drivers(df: pd.DataFrame, lap_number: int) -> pd.DataFrame:
 
 if __name__ == "__main__":
     enable_cache()
+    build_lap_dataset(2024, "Silverstone", "R")
 
-    session = load_session(2024, "Silverstone", "R")
-    lap_df = build_lap_dataset(session)
-    lap_df.to_csv("Silverstone_2024_race_laps.csv", index=False)
 
 
 
