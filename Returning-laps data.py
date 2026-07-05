@@ -9,16 +9,6 @@ def enable_cache(cache_dir: str = CACHE_DIR) -> None:
     fastf1.Cache.enable_cache(cache_dir)
 
 
-def load_session(year: int, event: str, session_type: str = "R"):
-
-    #year: e.g. 2024
-    #event: round number, or name/substring e.g. "Monza"
-    #session_type: 'FP1','FP2','FP3','Q','SQ','R' (race), 'S' (sprint)
-
-    session = fastf1.get_session(year, event, session_type)
-    session.load()
-    return session
-
 def build_lap_dataset(year,event,session_type) -> pd.DataFrame:
     #year: e.g. 2024
     #event: round number, or name/substring like "Monza"
