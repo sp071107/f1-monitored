@@ -39,10 +39,10 @@ def build_weather_data(year,event,session_type):
     print(weather_df.isna().sum()) #for start we want to map and count the NaN values in our dataframe...WE WILL HANDLE THE NaN VALUES LATER!!!
 
     weather_df.to_csv("weather_data.csv", index=False)
-
+    #print (weather_df)
     return weather_df
 
-
+   
 if __name__ == "__main__":
     enable_cache()
     build_weather_data(2024,"Silverstone","R")
