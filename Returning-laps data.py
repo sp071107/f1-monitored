@@ -69,7 +69,7 @@ def build_lap_dataset(year,event,session_type) -> pd.DataFrame:
     ]
     ordered_cols = [c for c in ordered_cols if c in df.columns]
     df = df[ordered_cols].sort_values(["lap", "position"], na_position="last").reset_index(drop=True)
-    df.to_csv("{event.lower()}_{year}_{session_type}_laps.csv", index=False)
+    df.to_csv(f"{event.lower()}_{year}_{session_type}_laps.csv", index=False)
 
 
     return df
