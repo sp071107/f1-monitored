@@ -1,3 +1,4 @@
+# To use it, you guy need to convert or open the file first, make it into a df in memory then use it, some function may require previous function to work faster ^^, tell me if any bug^^ or improvements avaible^^
 def file_to_df(name):
     import pandas as pd
     data = pd.read_csv(name)
@@ -9,14 +10,12 @@ def compute_position_changes(laps_df):
     df["position_change"] = df["prev_position"] - df["position"]
 
     if "is_pit_lap" in df.columns:
-        df["prev_lap_pit"] = (
-            df.groupby("driver")["is_pit_lap"].shift(1).fillna(False).astype(bool)
-        )
+        df["prev_lap_pit"] = ( df.groupby("driver")["is_pit_lap"].shift(1).fillna(False).astype(bool) )
     else:
         df["prev_lap_pit"] = False
 
     return df.sort_values(["lap", "position"], na_position="last").reset_index(drop=True)
-print(compute_position_changes(file_to_df('silverstone_2024_R_laps.csv')))
+# ex:print(compute_position_changes(file_to_df('silverstone_2024_R_laps.csv')))
 
 def detect_overtake_events(changes_df,include_pit_related: bool = False,):
 
@@ -42,7 +41,7 @@ def detect_overtake_events(changes_df,include_pit_related: bool = False,):
         .reset_index(drop=True)
     )
 #if __name__=='__main__':
-    print(detect_overtake_events(compute_position_changes(file_to_df('silverstone_2024_R_laps.csv'))))
+    #print(detect_overtake_events(compute_position_changes(file_to_df('silverstone_2024_R_laps.csv'))))
 #test
 
 def race_start_finish_summary(laps_df) :
@@ -51,19 +50,13 @@ def race_start_finish_summary(laps_df) :
     first_lap_idx = df.groupby("driver")["lap"].idxmin()
     last_lap_idx = df.groupby("driver")["lap"].idxmax()
 
-    starts = df.loc[first_lap_idx, ["driver", "position"]].rename(
-        columns={"position": "start_position_lap1"}
-    )
-    finishes = df.loc[last_lap_idx, ["driver", "position"]].rename(
-        columns={"position": "finish_position"}
-    )
+    starts = df.loc[first_lap_idx, ["driver", "position"]].rename( columns={"position": "start_position_lap1"})
+    finishes = df.loc[last_lap_idx, ["driver", "position"]].rename(columns={"position": "finish_position"})
 
     summary = starts.merge(finishes, on="driver")
     summary["start_position"] = summary["start_position_lap1"]
 
-    summary["net_position_change"] = (
-        summary["start_position"] - summary["finish_position"]
-    )
+    summary["net_position_change"] = (summary["start_position"] - summary["finish_position"])
     laps_completed = df.groupby("driver")["lap"].nunique()
     summary["laps_completed"] = summary["driver"].map(laps_completed)
 
@@ -71,12 +64,8 @@ def race_start_finish_summary(laps_df) :
 def attach_overtake_counts(summary_df, overtake_events):
     df = summary_df.copy()
 
-    gains = overtake_events.loc[
-        overtake_events["event_type"] == "overtake_gain"
-    ].groupby("driver").size()
-    losses = overtake_events.loc[
-        overtake_events["event_type"] == "overtake_loss"
-    ].groupby("driver").size()
+    gains = overtake_events.loc[ overtake_events["event_type"] == "overtake_gain"].groupby("driver").size()
+    losses = overtake_events.loc[ overtake_events["event_type"] == "overtake_loss"].groupby("driver").size()
 
     df["positions_gained_events"] = df["driver"].map(gains).fillna(0).astype(int)
     df["positions_lost_events"] = df["driver"].map(losses).fillna(0).astype(int)
@@ -104,9 +93,7 @@ def build_position_matrix(laps_df):
 def build_race_position_report(laps_df,top_n: int = 5,include_pit_related_overtakes: bool = False,save_prefix = None) :
 
     changes = compute_position_changes(laps_df)
-    overtakes = detect_overtake_events(
-        changes, include_pit_related=include_pit_related_overtakes
-    )
+    overtakes = detect_overtake_events( changes, include_pit_related=include_pit_related_overtakes)
 
     summary = race_start_finish_summary(laps_df)
     summary = attach_overtake_counts(summary, overtakes)
