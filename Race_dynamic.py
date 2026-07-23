@@ -1,4 +1,5 @@
 # To use it, you guy need to convert or open the file first, make it into a df in memory then use it, some function may require previous function to work faster ^^, tell me if any bug^^ or improvements avaible^^
+# I think the func names are clear enough to understand tho=]
 def file_to_df(name):
     import pandas as pd
     data = pd.read_csv(name)
@@ -75,7 +76,7 @@ def attach_overtake_counts(summary_df, overtake_events):
     #print(attach_overtake_counts(race_start_finish_summary(file_to_df('silverstone_2024_R_laps.csv')),detect_overtake_events(compute_position_changes(file_to_df('silverstone_2024_R_laps.csv')))))
 
 def biggest_movers(summary_df, top_n: int = 5):
-    """Returns the top net gainers and top net losers (start vs finish position)."""
+    #Returns the top net gainers and top net losers (start vs finish position)
     gainers = summary_df.sort_values("net_position_change", ascending=False).head(top_n)
     losers = summary_df.sort_values("net_position_change", ascending=True).head(top_n)
     return {
@@ -86,7 +87,7 @@ def biggest_movers(summary_df, top_n: int = 5):
 
 
 def build_position_matrix(laps_df):
-
+    
     return laps_df.pivot_table(index="lap", columns="driver", values="position")
 
 
