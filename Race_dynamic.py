@@ -72,7 +72,7 @@ def attach_overtake_counts(summary_df, overtake_events):
 
     return df
 #if __name__=='__main__':
-    print(attach_overtake_counts(race_start_finish_summary(file_to_df('silverstone_2024_R_laps.csv')),detect_overtake_events(compute_position_changes(file_to_df('silverstone_2024_R_laps.csv')))))
+    #print(attach_overtake_counts(race_start_finish_summary(file_to_df('silverstone_2024_R_laps.csv')),detect_overtake_events(compute_position_changes(file_to_df('silverstone_2024_R_laps.csv')))))
 
 def biggest_movers(summary_df, top_n: int = 5):
     """Returns the top net gainers and top net losers (start vs finish position)."""
